@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material You Studio — Динамический дизайн M3 Expressive</title>
+  <meta name="description" content="Интерактивный сайт и генератор динамических палитр в стиле Google Material You (Material Design 3 Expressive)." />
+  <meta name="theme-color" content="#141218" id="meta-theme-color" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-50..200" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Desktop Navigation Rail -->
+    <aside class="nav-rail" aria-label="Основная навигация">
+      <div class="nav-rail-top">
+        <button class="rail-menu-btn icon-btn ripple" id="btn-random-theme" title="Случайная тема" aria-label="Случайная тема">
+          <span class="material-symbols-rounded">shuffle</span>
+        </button>
+        <button class="fab fab-primary ripple" id="fab-export" title="Экспорт CSS токенов" aria-label="Экспорт CSS токенов">
+          <span class="material-symbols-rounded">code</span>
+        </button>
+      </div>
+
+      <nav class="nav-rail-items">
+        <a href="#hero" class="nav-item active" data-section="hero">
+          <span class="nav-indicator">
+            <span class="material-symbols-rounded">home</span>
+          </span>
+          <span class="nav-label">Обзор</span>
+        </a>
+        <a href="#palette" class="nav-item" data-section="palette">
+          <span class="nav-indicator">
+            <span class="material-symbols-rounded">palette</span>
+          </span>
+          <span class="nav-label">Палитра</span>
+        </a>
+        <a href="#components" class="nav-item" data-section="components">
+          <span class="nav-indicator">
+            <span class="material-symbols-rounded">widgets</span>
+          </span>
+          <span class="nav-label">UI-кит</span>
+        </a>
+        <a href="#shapes" class="nav-item" data-section="shapes">
+          <span class="nav-indicator">
+            <span class="material-symbols-rounded">interests</span>
+          </span>
+          <span class="nav-label">Формы</span>
+        </a>
+      </nav>
+
+      <div class="nav-rail-bottom">
+        <button class="icon-btn ripple" id="btn-theme-mode-rail" title="Переключить тему" aria-label="Переключить светлую или тёмную тему">
+          <span class="material-symbols-rounded" id="theme-icon-rail">light_mode</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="main-wrapper">
+      <!-- Top App Bar -->
+      <header class="top-app-bar">
+        <div class="top-bar-brand">
+          <div class="brand-badge" aria-hidden="true">
+            <svg viewBox="0 0 40 40" class="brand-flower">
+              <path d="M20 2C24.2 2 26.8 5.8 30.2 7.3C33.6 8.8 38 8.9 39.2 12.6C40.4 16.3 37.6 19.6 37.6 23.3C37.6 27 40.4 30.3 39.2 34C38 37.7 33.6 37.8 30.2 39.3C26.8 40.8 24.2 38 20 38C15.8 38 13.2 40.8 9.8 39.3C6.4 37.8 2 37.7 0.8 34C-0.4 30.3 2.4 27 2.4 23.3C2.4 19.6 -0.4 16.3 0.8 12.6C2 8.9 6.4 8.8 9.8 7.3C13.2 5.8 15.8 2 20 2Z" fill="currentColor"/>
+            </svg>
+            <span class="material-symbols-rounded brand-glyph">auto_awesome</span>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Material You</span>
+            <span class="brand-subtitle">M3 Expressive Studio</span>
+          </div>
+        </div>
+
+        <!-- M3 Docked Search Pill -->
+        <div class="search-bar-wrap">
+          <div class="m3-search-bar" id="search-bar">
+            <span class="material-symbols-rounded search-icon">search</span>
+            <input type="text" id="search-input" placeholder="Поиск токенов, компонентов, тем..." autocomplete="off" />
+            <button class="icon-btn-sm hidden" id="search-clear" aria-label="Очистить поиск">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </div>
+          <div class="search-dropdown hidden" id="search-dropdown" role="listbox"></div>
+        </div>
+
+        <div class="top-bar-actions">
+          <button class="tonal-pill-btn ripple" id="btn-contrast-toggle" title="Уровень контраста">
+            <span class="material-symbols-rounded">contrast</span>
+            <span class="btn-label-desktop" id="contrast-label">Стандарт</span>
+          </button>
+          <button class="icon-btn ripple" id="btn-theme-mode-top" title="Светлая / Тёмная тема" aria-label="Светлая или тёмная тема">
+            <span class="material-symbols-rounded" id="theme-icon-top">light_mode</span>
+          </button>
+          <button class="filled-btn ripple" id="btn-open-export">
+            <span class="material-symbols-rounded">download</span>
+            <span>CSS</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Content -->
+      <main class="content-area">
+        <!-- HERO SECTION -->
+        <section id="hero" class="section hero-section">
+          <div class="hero-bento">
+            <!-- Main Hero Card -->
+            <div class="hero-primary-card surface-container-low">
+              <div class="hero-bg-shapes" aria-hidden="true">
+                <div class="morph-blob blob-1"></div>
+                <div class="morph-blob blob-2"></div>
+              </div>
+              <div class="hero-content">
+                <div class="eyebrow-chip">
+                  <span class="material-symbols-rounded">palette</span>
+                  <span>Динамическая система дизайна</span>
+                </div>
+                <h1 class="display-large">Дизайн, который подстраивается под тебя.</h1>
+                <p class="hero-lead">
+                  Выбери любой цвет или обои — весь интерфейс мгновенно пересчитает тональные поверхности, контрасты, акценты и состояние каждого элемента по стандартам <strong>Material Design 3</strong>.
+                </p>
+                <div class="hero-cta-row">
+                  <a href="#palette" class="filled-btn btn-lg ripple">
+                    <span class="material-symbols-rounded">tune</span>
+                    <span>Настроить палитру</span>
+                  </a>
+                  <a href="#components" class="tonal-btn btn-lg ripple">
+                    <span class="material-symbols-rounded">touch_app</span>
+                    <span>Потыкать UI-кит</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Side Widgets Column (Android Pixel style) -->
+            <div class="hero-widgets-col">
+              <!-- Live Pixel Clock Widget -->
+              <div class="pixel-clock-card" id="clock-widget" title="Кликни для смены стиля часов">
+                <div class="clock-shape" aria-hidden="true">
+                  <svg viewBox="0 0 200 200" class="clock-scallop">
+                    <path d="M100,8 C115,8 124,22 138,27 C152,32 169,28 178,40 C187,52 181,69 186,83 C191,97 200,109 195,123 C190,137 175,143 168,156 C161,169 162,186 149,193 C136,200 121,191 106,193 C91,195 79,202 66,195 C53,188 51,171 40,161 C29,151 12,149 7,135 C2,121 12,107 12,92 C12,77 2,63 9,50 C16,37 33,39 45,30 C57,21 63,6 78,5 C86,4 93,8 100,8 Z" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="clock-readout">
+                  <span class="clock-time" id="clock-time">00:00</span>
+                  <span class="clock-date" id="clock-date">Загрузка...</span>
+                </div>
+              </div>
+
+              <!-- Quick Seed Switcher Card -->
+              <div class="seed-picker-card surface-container">
+                <div class="card-header-compact">
+                  <span class="title-medium">Быстрые обои</span>
+                  <span class="seed-hex-pill" id="current-seed-badge">#6750A4</span>
+                </div>
+                <div class="wallpaper-swatches" id="wallpaper-swatches" role="radiogroup" aria-label="Выбор цветовой темы">
+                  <!-- Populated by JS -->
+                </div>
+                <div class="custom-color-row">
+                  <label class="custom-color-trigger ripple" for="seed-color-input">
+                    <span class="color-dot-preview" id="color-dot-preview"></span>
+                    <span>Свой цвет</span>
+                    <input type="color" id="seed-color-input" value="#6750a4" aria-label="Выбрать произвольный цвет" />
+                  </label>
+                  <button class="outlined-btn btn-sm ripple" id="btn-random-seed-card">
+                    <span class="material-symbols-rounded">casino</span>
+                    <span>Рандом</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expressive Metric Pills Strip -->
+          <div class="expressive-strip">
+            <div class="metric-card surface-container-low">
+              <div class="metric-icon primary-container">
+                <span class="material-symbols-rounded">auto_fix_high</span>
+              </div>
+              <div>
+                <div class="metric-value">OKLCH</div>
+                <div class="metric-label">Перцептивный расчёт тонов</div>
+              </div>
+            </div>
+            <div class="metric-card surface-container-low">
+              <div class="metric-icon secondary-container">
+                <span class="material-symbols-rounded">layers</span>
+              </div>
+              <div>
+                <div class="metric-value">5 уровней</div>
+                <div class="metric-label">Тональных поверхностей</div>
+              </div>
+            </div>
+            <div class="metric-card surface-container-low">
+              <div class="metric-icon tertiary-container">
+                <span class="material-symbols-rounded">style</span>
+              </div>
+              <div>
+                <div class="metric-value">5 схем</div>
+                <div class="metric-label">От Monochrome до Expressive</div>
+              </div>
+            </div>
+            <div class="metric-card surface-container-low">
+              <div class="metric-icon error-container">
+                <span class="material-symbols-rounded">accessibility_new</span>
+              </div>
+              <div>
+                <div class="metric-value">WCAG AA+</div>
+                <div class="metric-label">Автоподбор контраста текста</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DYNAMIC PALETTE STUDIO -->
+        <section id="palette" class="section">
+          <div class="section-header">
+            <div>
+              <span class="section-kicker">Dynamic Color Engine</span>
+              <h2 class="headline-large">Студия динамической палитры</h2>
+            </div>
+            <!-- M3 Segmented Button for Scheme Algorithm -->
+            <div class="segmented-group" id="scheme-segmented" role="radiogroup" aria-label="Алгоритм палитры">
+              <button class="seg-btn active ripple" data-scheme="tonalSpot" role="radio" aria-checked="true">
+                <span class="material-symbols-rounded seg-check">check</span>
+                <span>Tonal Spot</span>
+              </button>
+              <button class="seg-btn ripple" data-scheme="vibrant" role="radio" aria-checked="false">
+                <span class="material-symbols-rounded seg-check">check</span>
+                <span>Vibrant</span>
+              </button>
+              <button class="seg-btn ripple" data-scheme="expressive" role="radio" aria-checked="false">
+                <span class="material-symbols-rounded seg-check">check</span>
+                <span>Expressive</span>
+              </button>
+              <button class="seg-btn ripple" data-scheme="neutral" role="radio" aria-checked="false">
+                <span class="material-symbols-rounded seg-check">check</span>
+                <span>Neutral</span>
+              </button>
+              <button class="seg-btn ripple" data-scheme="monochrome" role="radio" aria-checked="false">
+                <span class="material-symbols-rounded seg-check">check</span>
+                <span>Mono</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Color Roles Grid -->
+          <div class="palette-grid" id="palette-grid">
+            <!-- Primary Group -->
+            <div class="role-card role-primary" data-token="--md-sys-color-primary">
+              <div class="role-top">
+                <span class="role-name">Primary</span>
+                <span class="role-hex" data-hex-for="primary"></span>
+              </div>
+              <span class="role-desc">Главные акценты, FAB, активные кнопки</span>
+            </div>
+            <div class="role-card role-primary-container" data-token="--md-sys-color-primary-container">
+              <div class="role-top">
+                <span class="role-name">Primary Container</span>
+                <span class="role-hex" data-hex-for="primaryContainer"></span>
+              </div>
+              <span class="role-desc">Мягкие акценты и заполненные контейнеры</span>
+            </div>
+
+            <!-- Secondary Group -->
+            <div class="role-card role-secondary" data-token="--md-sys-color-secondary">
+              <div class="role-top">
+                <span class="role-name">Secondary</span>
+                <span class="role-hex" data-hex-for="secondary"></span>
+              </div>
+              <span class="role-desc">Второстепенные элементы и фильтры</span>
+            </div>
+            <div class="role-card role-secondary-container" data-token="--md-sys-color-secondary-container">
+              <div class="role-top">
+                <span class="role-name">Secondary Container</span>
+                <span class="role-hex" data-hex-for="secondaryContainer"></span>
+              </div>
+              <span class="role-desc">Индикаторы навигации и тональные кнопки</span>
+            </div>
+
+            <!-- Tertiary Group -->
+            <div class="role-card role-tertiary" data-token="--md-sys-color-tertiary">
+              <div class="role-top">
+                <span class="role-name">Tertiary</span>
+                <span class="role-hex" data-hex-for="tertiary"></span>
+              </div>
+              <span class="role-desc">Контрастные акценты, бейджи и балансировка</span>
+            </div>
+            <div class="role-card role-tertiary-container" data-token="--md-sys-color-tertiary-container">
+              <div class="role-top">
+                <span class="role-name">Tertiary Container</span>
+                <span class="role-hex" data-hex-for="tertiaryContainer"></span>
+              </div>
+              <span class="role-desc">Виджеты, уведомления и декоративные формы</span>
+            </div>
+          </div>
+
+          <!-- Tonal Surface Elevation Ladder -->
+          <div class="surface-ladder-card surface-container-low">
+            <div class="card-header-row">
+              <div>
+                <h3 class="title-large">Лестница тональных поверхностей</h3>
+                <p class="body-medium text-muted">В Material You глубина передаётся не тенями, а ступенчатым оттенком поверхности. Кликни на блок, чтобы скопировать HEX.</p>
+              </div>
+            </div>
+            <div class="surface-ladder" id="surface-ladder">
+              <button class="surface-step step-lowest ripple" data-role="surfaceContainerLowest">
+                <span class="step-label">Lowest</span>
+                <span class="step-hex" data-hex-for="surfaceContainerLowest"></span>
+              </button>
+              <button class="surface-step step-low ripple" data-role="surfaceContainerLow">
+                <span class="step-label">Low</span>
+                <span class="step-hex" data-hex-for="surfaceContainerLow"></span>
+              </button>
+              <button class="surface-step step-base ripple" data-role="surfaceContainer">
+                <span class="step-label">Container</span>
+                <span class="step-hex" data-hex-for="surfaceContainer"></span>
+              </button>
+              <button class="surface-step step-high ripple" data-role="surfaceContainerHigh">
+                <span class="step-label">High</span>
+                <span class="step-hex" data-hex-for="surfaceContainerHigh"></span>
+              </button>
+              <button class="surface-step step-highest ripple" data-role="surfaceContainerHighest">
+                <span class="step-label">Highest</span>
+                <span class="step-hex" data-hex-for="surfaceContainerHighest"></span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- INTERACTIVE COMPONENTS PLAYGROUND -->
+        <section id="components" class="section">
+          <div class="section-header">
+            <div>
+              <span class="section-kicker">Interactive M3 Components</span>
+              <h2 class="headline-large">Интерактивный UI-кит</h2>
+            </div>
+            <button class="tonal-btn ripple" id="btn-show-dialog">
+              <span class="material-symbols-rounded">open_in_new</span>
+              <span>Открыть M3 Диалог</span>
+            </button>
+          </div>
+
+          <div class="components-bento">
+            <!-- Buttons & FABs Card -->
+            <div class="comp-card surface-container-low">
+              <div class="comp-card-head">
+                <span class="material-symbols-rounded">smart_button</span>
+                <h3 class="title-medium">Кнопки и FAB</h3>
+              </div>
+              <div class="buttons-showcase">
+                <button class="filled-btn ripple" data-snack="Нажата Filled кнопка">
+                  <span class="material-symbols-rounded">bolt</span>
+                  <span>Filled</span>
+                </button>
+                <button class="tonal-btn ripple" data-snack="Нажата Filled Tonal кнопка">
+                  <span class="material-symbols-rounded">auto_awesome</span>
+                  <span>Tonal</span>
+                </button>
+                <button class="elevated-btn ripple" data-snack="Нажата Elevated кнопка">
+                  <span class="material-symbols-rounded">layers</span>
+                  <span>Elevated</span>
+                </button>
+                <button class="outlined-btn ripple" data-snack="Нажата Outlined кнопка">
+                  <span>Outlined</span>
+                </button>
+                <button class="text-btn ripple" data-snack="Нажата Text кнопка">
+                  <span>Text Action</span>
+                </button>
+              </div>
+              <div class="fab-row">
+                <button class="fab fab-surface ripple" data-snack="Surface FAB активирован" aria-label="Surface FAB">
+                  <span class="material-symbols-rounded">edit</span>
+                </button>
+                <button class="fab fab-secondary ripple" data-snack="Secondary FAB активирован" aria-label="Secondary FAB">
+                  <span class="material-symbols-rounded">navigation</span>
+                </button>
+                <button class="fab fab-tertiary ripple" data-snack="Tertiary FAB активирован" aria-label="Tertiary FAB">
+                  <span class="material-symbols-rounded">favorite</span>
+                </button>
+                <button class="extended-fab ripple" data-snack="Новое сообщение создано">
+                  <span class="material-symbols-rounded">add</span>
+                  <span>Создать</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Android 15/16 Squiggly Media Player Widget -->
+            <div class="comp-card media-player-card">
+              <div class="media-top">
+                <div class="album-art">
+                  <div class="album-art-inner">
+                    <span class="material-symbols-rounded">graphic_eq</span>
+                  </div>
+                </div>
+                <div class="media-info">
+                  <span class="media-badge">Now Playing</span>
+                  <h3 class="title-large">Dynamic Harmony</h3>
+                  <p class="body-medium media-artist">Material Soundscapes • 2026</p>
+                </div>
+                <button class="play-fab ripple" id="btn-play-toggle" aria-label="Воспроизвести или пауза">
+                  <span class="material-symbols-rounded" id="play-icon">pause</span>
+                </button>
+              </div>
+
+              <div class="squiggly-progress-wrap">
+                <span class="time-stamp" id="media-current-time">1:24</span>
+                <div class="squiggly-track" id="squiggly-track" role="slider" aria-label="Прогресс трека" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42" tabindex="0">
+                  <div class="squiggly-active" id="squiggly-active" style="width: 42%;">
+                    <svg class="squiggle-svg playing" id="squiggle-svg" viewBox="0 0 240 16" preserveAspectRatio="none">
+                      <path d="M0 8 Q 7.5 1, 15 8 T 30 8 T 45 8 T 60 8 T 75 8 T 90 8 T 105 8 T 120 8 T 135 8 T 150 8 T 165 8 T 180 8 T 195 8 T 210 8 T 225 8 T 240 8" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="squiggly-thumb" id="squiggly-thumb" style="left: 42%;"></div>
+                  <div class="squiggly-inactive"></div>
+                </div>
+                <span class="time-stamp">3:18</span>
+              </div>
+
+              <div class="media-controls-row">
+                <button class="icon-btn-media ripple" data-snack="Перемешивание включено" aria-label="Перемешать">
+                  <span class="material-symbols-rounded">shuffle</span>
+                </button>
+                <button class="icon-btn-media ripple" id="btn-prev-track" aria-label="Предыдущий трек">
+                  <span class="material-symbols-rounded">skip_previous</span>
+                </button>
+                <button class="icon-btn-media ripple" id="btn-next-track" aria-label="Следующий трек">
+                  <span class="material-symbols-rounded">skip_next</span>
+                </button>
+                <button class="icon-btn-media ripple" id="btn-like-track" aria-label="В избранное">
+                  <span class="material-symbols-rounded" id="like-icon">favorite</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Controls: Switches & Sliders -->
+            <div class="comp-card surface-container-low">
+              <div class="comp-card-head">
+                <span class="material-symbols-rounded">tune</span>
+                <h3 class="title-medium">Переключатели и слайдеры</h3>
+              </div>
+
+              <div class="switches-list">
+                <label class="switch-row">
+                  <div>
+                    <div class="body-large">Динамический цвет обоев</div>
+                    <div class="body-small text-muted">Автоматически адаптировать акценты</div>
+                  </div>
+                  <input type="checkbox" class="m3-switch" checked id="sw-dynamic" />
+                  <span class="m3-switch-track">
+                    <span class="m3-switch-thumb">
+                      <span class="material-symbols-rounded thumb-icon-on">check</span>
+                      <span class="material-symbols-rounded thumb-icon-off">close</span>
+                    </span>
+                  </span>
+                </label>
+
+                <label class="switch-row">
+                  <div>
+                    <div class="body-large">Пружинная анимация (M3 Motion)</div>
+                    <div class="body-small text-muted">Плавные переходы и ripple-отклик</div>
+                  </div>
+                  <input type="checkbox" class="m3-switch" checked id="sw-motion" />
+                  <span class="m3-switch-track">
+                    <span class="m3-switch-thumb">
+                      <span class="material-symbols-rounded thumb-icon-on">check</span>
+                      <span class="material-symbols-rounded thumb-icon-off">close</span>
+                    </span>
+                  </span>
+                </label>
+
+                <label class="switch-row">
+                  <div>
+                    <div class="body-large">Компактная плотность</div>
+                    <div class="body-small text-muted">Уменьшенные отступы карточек</div>
+                  </div>
+                  <input type="checkbox" class="m3-switch" id="sw-compact" />
+                  <span class="m3-switch-track">
+                    <span class="m3-switch-thumb">
+                      <span class="material-symbols-rounded thumb-icon-on">check</span>
+                      <span class="material-symbols-rounded thumb-icon-off">close</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="slider-block">
+                <div class="slider-header">
+                  <span class="label-large">Скругление карточек (Shape Scale)</span>
+                  <span class="slider-value-pill" id="radius-value-label">28px</span>
+                </div>
+                <input type="range" class="m3-slider" id="radius-slider" min="8" max="40" value="28" />
+              </div>
+
+              <div class="slider-block">
+                <div class="slider-header">
+                  <span class="label-large">Насыщенность акцентов (Chroma)</span>
+                  <span class="slider-value-pill" id="chroma-value-label">100%</span>
+                </div>
+                <input type="range" class="m3-slider" id="chroma-slider" min="30" max="140" value="100" />
+              </div>
+            </div>
+
+            <!-- Chips & Quick Settings Tiles (Android Quick Settings style) -->
+            <div class="comp-card surface-container-low">
+              <div class="comp-card-head">
+                <span class="material-symbols-rounded">grid_view</span>
+                <h3 class="title-medium">Плитки быстрых настроек и чипы</h3>
+              </div>
+
+              <div class="qs-grid">
+                <button class="qs-tile active ripple" data-qs="Wi-Fi">
+                  <span class="material-symbols-rounded">wifi</span>
+                  <div class="qs-text">
+                    <span class="qs-title">Интернет</span>
+                    <span class="qs-sub">5G • Подключено</span>
+                  </div>
+                </button>
+                <button class="qs-tile active ripple" data-qs="Bluetooth">
+                  <span class="material-symbols-rounded">bluetooth</span>
+                  <div class="qs-text">
+                    <span class="qs-title">Bluetooth</span>
+                    <span class="qs-sub">Pixel Buds Pro</span>
+                  </div>
+                </button>
+                <button class="qs-tile ripple" data-qs="Не беспокоить">
+                  <span class="material-symbols-rounded">do_not_disturb_on</span>
+                  <div class="qs-text">
+                    <span class="qs-title">Тишина</span>
+                    <span class="qs-sub">Выключено</span>
+                  </div>
+                </button>
+                <button class="qs-tile ripple" data-qs="Фонарик">
+                  <span class="material-symbols-rounded">flashlight_on</span>
+                  <div class="qs-text">
+                    <span class="qs-title">Фонарик</span>
+                    <span class="qs-sub">Выключено</span>
+                  </div>
+                </button>
+              </div>
+
+              <div class="chips-wrap">
+                <button class="m3-chip selected ripple" data-chip>
+                  <span class="material-symbols-rounded chip-check">check</span>
+                  <span>Material 3</span>
+                </button>
+                <button class="m3-chip selected ripple" data-chip>
+                  <span class="material-symbols-rounded chip-check">check</span>
+                  <span>Dynamic Color</span>
+                </button>
+                <button class="m3-chip ripple" data-chip>
+                  <span class="material-symbols-rounded chip-check">check</span>
+                  <span>Expressive</span>
+                </button>
+                <button class="m3-chip ripple" data-chip>
+                  <span class="material-symbols-rounded chip-check">check</span>
+                  <span>OKLCH</span>
+                </button>
+                <button class="m3-chip ripple" data-chip>
+                  <span class="material-symbols-rounded chip-check">check</span>
+                  <span>GitHub Pages</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SHAPES & TYPOGRAPHY -->
+        <section id="shapes" class="section">
+          <div class="section-header">
+            <div>
+              <span class="section-kicker">M3 Expressive Geometry & Type</span>
+              <h2 class="headline-large">Формы и типографика</h2>
+            </div>
+          </div>
+
+          <div class="shapes-type-grid">
+            <!-- Expressive Shapes Showcase -->
+            <div class="comp-card surface-container-low">
+              <h3 class="title-large" style="margin-bottom: 8px;">Экспрессивная геометрия</h3>
+              <p class="body-medium text-muted" style="margin-bottom: 24px;">Нажми на любую фигуру, чтобы почувствовать пружинный отклик M3 Expressive.</p>
+              <div class="expressive-shapes-row">
+                <button class="shape-tile ripple" data-snack="Форма: Soft Pill (Full)">
+                  <div class="shape-visual shape-pill"></div>
+                  <span class="label-medium">Pill</span>
+                </button>
+                <button class="shape-tile ripple" data-snack="Форма: Squircle (28dp)">
+                  <div class="shape-visual shape-squircle"></div>
+                  <span class="label-medium">Squircle</span>
+                </button>
+                <button class="shape-tile ripple" data-snack="Форма: Clover Leaf">
+                  <div class="shape-visual shape-clover">
+                    <svg viewBox="0 0 100 100"><path d="M50 8 C64 8, 70 18, 70 30 C82 30, 92 36, 92 50 C92 64, 82 70, 70 70 C70 82, 64 92, 50 92 C36 92, 30 82, 30 70 C18 70, 8 64, 8 50 C8 36, 18 30, 30 30 C30 18, 36 8, 50 8 Z" fill="currentColor"/></svg>
+                  </div>
+                  <span class="label-medium">Clover</span>
+                </button>
+                <button class="shape-tile ripple" data-snack="Форма: Scallop Cookie">
+                  <div class="shape-visual shape-cookie">
+                    <svg viewBox="0 0 100 100"><path d="M50 4 C57 4 62 11 69 14 C76 17 85 15 90 21 C95 27 92 36 95 43 C98 50 98 57 95 64 C92 71 95 80 90 86 C85 92 76 90 69 93 C62 96 57 100 50 100 C43 100 38 96 31 93 C24 90 15 92 10 86 C5 80 8 71 5 64 C2 57 2 50 5 43 C8 36 5 27 10 21 C15 15 24 17 31 14 C38 11 43 4 50 4 Z" fill="currentColor"/></svg>
+                  </div>
+                  <span class="label-medium">Scallop</span>
+                </button>
+                <button class="shape-tile ripple" data-snack="Форма: Arch">
+                  <div class="shape-visual shape-arch"></div>
+                  <span class="label-medium">Arch</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Type Scale Card -->
+            <div class="comp-card surface-container-low">
+              <h3 class="title-large" style="margin-bottom: 16px;">Типографическая шкала</h3>
+              <div class="type-scale-list">
+                <div class="type-row">
+                  <span class="type-meta">Display / 700</span>
+                  <span class="type-sample-display">Material You</span>
+                </div>
+                <div class="type-row">
+                  <span class="type-meta">Headline / 600</span>
+                  <span class="type-sample-headline">Адаптивный интерфейс</span>
+                </div>
+                <div class="type-row">
+                  <span class="type-meta">Title / 600</span>
+                  <span class="type-sample-title">Чистая иерархия и читаемость</span>
+                </div>
+                <div class="type-row">
+                  <span class="type-meta">Body / 400</span>
+                  <span class="type-sample-body">Тональные поверхности и мягкие скругления создают уютную, живую цифровую среду.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="site-footer surface-container-low">
+          <div class="footer-left">
+            <span class="material-symbols-rounded">deployed_code</span>
+            <span>Создано в стиле Google Material You (M3 Expressive) • Опубликовано на GitHub Pages</span>
+          </div>
+          <div class="footer-right">
+            <a href="https://github.com/qkryt/material-you-studio" target="_blank" rel="noopener noreferrer" class="text-btn ripple">
+              <span class="material-symbols-rounded">open_in_new</span>
+              <span>GitHub Репозиторий</span>
+            </a>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="nav-bar-mobile" aria-label="Мобильная навигация">
+      <a href="#hero" class="nav-item active" data-section="hero">
+        <span class="nav-indicator">
+          <span class="material-symbols-rounded">home</span>
+        </span>
+        <span class="nav-label">Обзор</span>
+      </a>
+      <a href="#palette" class="nav-item" data-section="palette">
+        <span class="nav-indicator">
+          <span class="material-symbols-rounded">palette</span>
+        </span>
+        <span class="nav-label">Палитра</span>
+      </a>
+      <a href="#components" class="nav-item" data-section="components">
+        <span class="nav-indicator">
+          <span class="material-symbols-rounded">widgets</span>
+        </span>
+        <span class="nav-label">UI-кит</span>
+      </a>
+      <a href="#shapes" class="nav-item" data-section="shapes">
+        <span class="nav-indicator">
+          <span class="material-symbols-rounded">interests</span>
+        </span>
+        <span class="nav-label">Формы</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- M3 Interactive Dialog -->
+  <div class="dialog-scrim hidden" id="demo-dialog" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title">
+    <div class="m3-dialog">
+      <div class="dialog-icon-wrap">
+        <span class="material-symbols-rounded">auto_awesome</span>
+      </div>
+      <h3 class="headline-small" id="demo-dialog-title">Material 3 Диалог</h3>
+      <p class="body-medium text-muted">
+        Диалоги в Material You используют поверхность <code>Surface Container High</code>, скругление <code>28dp</code> и чёткое разделение основного и второстепенного действия.
+      </p>
+      <div class="dialog-actions">
+        <button class="text-btn ripple" id="dialog-close-cancel">Отмена</button>
+        <button class="filled-btn ripple" id="dialog-close-ok">Понятно</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSS Export Modal -->
+  <div class="dialog-scrim hidden" id="export-dialog" role="dialog" aria-modal="true" aria-labelledby="export-dialog-title">
+    <div class="m3-dialog m3-dialog-wide">
+      <div class="export-header">
+        <div>
+          <h3 class="headline-small" id="export-dialog-title">CSS-токены текущей темы</h3>
+          <p class="body-small text-muted" id="export-meta">Seed: #6750A4 • Tonal Spot • Dark</p>
+        </div>
+        <button class="icon-btn ripple" id="export-close-x" aria-label="Закрыть">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <pre class="code-preview"><code id="css-export-code"></code></pre>
+      <div class="dialog-actions">
+        <button class="text-btn ripple" id="export-close-btn">Закрыть</button>
+        <button class="filled-btn ripple" id="export-copy-btn">
+          <span class="material-symbols-rounded">content_copy</span>
+          <span>Скопировать CSS</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- M3 Snackbar -->
+  <div class="m3-snackbar" id="snackbar" role="status" aria-live="polite">
+    <span id="snackbar-text">Скопировано</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
